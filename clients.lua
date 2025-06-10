@@ -10,6 +10,7 @@ return function(opts)
    local clientkeys = opts.clientkeys
    local clientbuttons = opts.clientbuttons
    local vi_focus = opts.vi_focus or false
+   local spawn_next_to_focused = {}
 
    -- Rules
    awful.rules.rules = {
@@ -63,6 +64,16 @@ return function(opts)
           and not c.size_hints.user_position
           and not c.size_hints.program_position then
          awful.placement.no_offscreen(c)
+      end
+
+      local pid = c.pid
+      if pid and spawn_next_to_focused[pid] then
+         local ref_client = spawn_next_to_focused[pid]
+         if ref_client.valid and c.screen == ref_client.screen then
+            c:move_to_tag(ref_client.first_tag)
+            c:swap(ref_client)
+         end
+         spawn_next_to_focused[pid] = nil
       end
    end)
 

@@ -111,25 +111,22 @@ awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) 
 clientbuttons = require("mouse")
 -- }}}
 
--- {{{ Clients
-require("clients") {
-   clientkeys = clientkeys,
-   clientbuttons = clientbuttons,
-   vi_focus = vi_focus
-}
--- }}}
---
---KEYBOARD
+-- KEYBOARD LAYOUT
 awful.spawn.with_shell("setxkbmap ch de")
 
--- Load keybindings
-local keys = require("keys")
+-- Load keys
+-- Load keys
+local keys = require("keys") -- must come first
 
--- Set keys
+-- Set global keys
 root.keys(keys.global)
-client.connect_signal("request::default_keybindings", function()
-   awful.keyboard.append_client_keybindings(keys.client)
-end)
+
+-- Load client rules
+require("clients") {
+   clientkeys = keys.client, -- make sure it's assigned here
+   clientbuttons = keys.clientbuttons,
+   vi_focus = keys.vi_focus
+}
 
 -- SCREENS
 awful.spawn.with_shell("~/.screenlayout/awesome.sh")

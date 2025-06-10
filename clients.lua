@@ -14,6 +14,15 @@ return function(opts)
    -- Rules
    awful.rules.rules = {
       {
+         rule = { class = "spectacle" },
+         properties = { floating = true, ontop = true },
+         callback = function(c)
+            awful.placement.centered(c, nil)
+         end
+      },
+
+
+      {
          rule = {},
          properties = {
             border_width = beautiful.border_width,

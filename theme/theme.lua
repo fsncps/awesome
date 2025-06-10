@@ -13,20 +13,20 @@ theme.dir                                       = home .. "/.config/awesome/them
 
 -- Basic appearance
 theme.font                                      = "FiraCode Nerd Font 10.5"
-theme.taglist_font                              = "FiraCode Nerd Font 13.5"
+theme.taglist_font                              = "BaskervilleNeo Text 12.5"
 theme.clock_font                                = "FiraCode Nerd Font 15.5"
 theme.wallpaper                                 = theme.dir .. "/wall.png"
 
 theme.fg_normal                                 = "#BBBBBB"
 theme.fg_focus                                  = "#eed49f"
-theme.bg_normal                                 = "#1e2030"
-theme.bg_focus                                  = "#181926"
+theme.bg_normal                                 = "#24273a"
+theme.bg_focus                                  = "#1e1e2e"
 theme.border_width                              = dpi(1)
 theme.border_normal                             = "#141414"
-theme.border_focus                              = "#93B6FF"
+theme.border_focus                              = "#363a4f"
 theme.useless_gap                               = 0
 
-theme.tasklist_bg_focus                         = "#303446" -- background of active client
+theme.tasklist_bg_focus                         = "#1e1e2e" -- background of active client
 theme.tasklist_fg_focus                         = "#eed49f"
 theme.tasklist_bg_normal                        = theme.bg_normal
 theme.tasklist_fg_normal                        = theme.fg_normal
@@ -38,8 +38,8 @@ theme.tasklist_font                             = theme.font
 -- theme.taglist_squares_sel                       = theme.dir .. "/icons/square_sel.png"
 -- theme.taglist_squares_unsel                     = theme.dir .. "/icons/square_unsel.png"
 theme.taglist_fg_focus                          = "#FFFFFF"
-theme.taglist_bg_focus                          = "#111111"
-theme.taglist_bg_normal                         = "#111111"
+theme.taglist_bg_focus                          = "#1e1e2e"
+theme.taglist_bg_normal                         = "#24273a"
 
 -- Layouts
 theme.layout_tile                               = theme.dir .. "/icons/tile.png"

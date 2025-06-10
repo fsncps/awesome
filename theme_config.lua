@@ -10,18 +10,18 @@ local lain      = require("lain")
 beautiful.init(string.format("%s/.config/awesome/theme/theme.lua", os.getenv("HOME")))
 
 -- Define globals
-local M                                = {}
+local M              = {}
 
-M.modkey                               = "Mod4"
-M.altkey                               = "Mod1"
-M.terminal                             = "wezterm"
-M.browser                              = "librewolf"
-M.editor                               = os.getenv("EDITOR") or "nvim"
-M.vi_focus                             = false
-M.cycle_prev                           = true
+M.modkey             = "Mod4"
+M.altkey             = "Mod1"
+M.terminal           = "wezterm"
+M.browser            = "librewolf"
+M.editor             = os.getenv("EDITOR") or "nvim"
+M.vi_focus           = false
+M.cycle_prev         = true
 
 -- Set layouts
-awful.layout.layouts                   = {
+awful.layout.layouts = {
    -- awful.layout.suit.floating,
    awful.layout.suit.tile,
    -- awful.layout.suit.tile.left,
@@ -41,22 +41,22 @@ awful.layout.layouts                   = {
 }
 
 -- specific layout config
-lain.layout.termfair.nmaster           = 3
-lain.layout.termfair.ncol              = 1
-lain.layout.termfair.center.nmaster    = 3
-lain.layout.termfair.center.ncol       = 1
-lain.layout.cascade.tile.offset_x      = 2
-lain.layout.cascade.tile.offset_y      = 32
-lain.layout.cascade.tile.extra_padding = 5
-lain.layout.cascade.tile.nmaster       = 5
-lain.layout.cascade.tile.ncol          = 2
+-- lain.layout.termfair.nmaster           = 3
+-- lain.layout.termfair.ncol              = 1
+-- lain.layout.termfair.center.nmaster    = 3
+-- lain.layout.termfair.center.ncol       = 1
+-- lain.layout.cascade.tile.offset_x      = 2
+-- lain.layout.cascade.tile.offset_y      = 32
+-- lain.layout.cascade.tile.extra_padding = 5
+-- lain.layout.cascade.tile.nmaster       = 5
+-- lain.layout.cascade.tile.ncol          = 2
 
--- Tag names
-awful.util.tagnames                    = { " I ", " II ", " III " }
 
--- Taglist buttons
-local mytable                          = awful.util.table or gears.table
-awful.util.taglist_buttons             = mytable.join(
+-- TAGS
+awful.util.tagnames         = { "I", "II", "III" }
+
+local mytable               = awful.util.table or gears.table
+awful.util.taglist_buttons  = mytable.join(
    awful.button({}, 1, function(t) t:view_only() end),
    awful.button({ M.modkey }, 1, function(t)
       if client.focus then client.focus:move_to_tag(t) end
@@ -70,7 +70,7 @@ awful.util.taglist_buttons             = mytable.join(
 )
 
 -- Tasklist buttons
-awful.util.tasklist_buttons            = mytable.join(
+awful.util.tasklist_buttons = mytable.join(
    awful.button({}, 1, function(c)
       if c == client.focus then
          c.minimized = true

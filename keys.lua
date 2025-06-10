@@ -112,7 +112,7 @@ globalkeys = mytable.join(
       { description = "toggle wibox", group = "awesome" }),
 
    -- move client to next tag/screen
-   awful.key({ modkey, "Shift" }, "Page_Up", function()
+   awful.key({ modkey, "Shift" }, "Page_Down", function()
       local c = client.focus
       if not c then return end
       local tags = c.screen.tags
@@ -121,7 +121,7 @@ globalkeys = mytable.join(
       c:move_to_tag(tags[next_idx])
       tags[next_idx]:view_only()
    end, { description = "move client to next tag", group = "move client" }),
-   awful.key({ modkey, "Shift" }, "Page_Down", function()
+   awful.key({ modkey, "Shift" }, "Page_Up", function()
       local c = client.focus
       if not c then return end
       local tags = c.screen.tags
@@ -267,16 +267,28 @@ globalkeys = mytable.join(
 
 
    -- User programs
-   awful.key({ modkey }, "b", function() awful.spawn(browser) end,
+   awful.key({ modkey }, "q", function() awful.spawn(browser) end,
       { description = "run browser", group = "launcher" }),
    awful.key({ modkey }, "p", function() awful.spawn("rofi -show drun") end,
       { description = "run launcher", group = "launcher" }),
-   awful.key({ modkey }, "f", function() awful.spawn("dolphin") end,
-      { description = "open file manager", group = "launcher" }),
+   awful.key({ modkey }, "f", function()
+      local c = client.focus
+      if c then
+         awful.spawn("dolphin", {
+            pid_callback = function(pid)
+               spawn_next_to_focused[pid] = c
+            end
+         })
+      else
+         awful.spawn("dolphin")
+      end
+   end, { description = "open file manager next to current", group = "launcher" }),
    awful.key({ modkey }, "k", function() awful.spawn("kitty") end,
       { description = "open kitty terminal", group = "launcher" }),
+   awful.key({ modkey }, "t", function()
+      awful.spawn("wezterm cli spawn --new-window")
+   end, { description = "new wezterm window", group = "launcher" }),
 
-   -- Default
    --[[ Menubar
     -- awful.key({ modkey }, "p", function() menubar.show() end,
     --           {description = "show the menubar", group = "launcher"}),
@@ -324,7 +336,7 @@ clientkeys = mytable.join(
    awful.key({ modkey, "Control" }, "space", awful.client.floating.toggle,
       { description = "toggle floating", group = "client" }),
 
-   awful.key({ modkey, "Control" }, "Return", function(c)
+   awful.key({ modkey }, "Return", function(c)
       c:swap(awful.client.getmaster())
    end, { description = "move to master", group = "client" }),
    awful.key({ modkey }, "o", function(c) c:move_to_screen() end,

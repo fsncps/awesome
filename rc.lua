@@ -24,6 +24,7 @@ local naughty    = require("naughty")
 local xresources = require("beautiful.xresources")
 xresources.set_dpi(240)
 
+
 --
 require("awful.hotkeys_popup.keys")
 local config     = require("theme_config")
@@ -35,6 +36,7 @@ local editor     = config.editor
 local vi_focus   = config.vi_focus
 local cycle_prev = config.cycle_prev
 
+modkey           = "Mod3"
 -- }}}
 -- {{{ Error handling
 
@@ -114,6 +116,7 @@ clientbuttons = require("mouse")
 -- KEYBOARD LAYOUT
 awful.spawn.with_shell("setxkbmap ch de")
 
+awful.spawn.with_shell("~/.config/awesome/keymap.sh")
 -- Load keys
 -- Load keys
 local keys = require("keys") -- must come first
@@ -129,4 +132,4 @@ require("clients") {
 }
 
 -- SCREENS
-awful.spawn.with_shell("~/.screenlayout/awesome.sh")
+awful.spawn.with_shell("~/.config/awesome/screen.sh")

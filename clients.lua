@@ -22,6 +22,22 @@ return function(opts)
          end
       },
 
+      -- First wezterm: screen 1
+      { rule = { class = "wezterm-main" },   properties = { screen = 2, fullscreen = true } },
+      { rule = { class = "wezterm-second" }, properties = { screen = 1, fullscreen = true } },
+
+
+      -- Librewolf and Dolphin tiled on screen 3 (1080p)
+      {
+         rule = { class = "librewolf" },
+         properties = { screen = 3, tag = "apps" }
+      },
+      {
+         rule = { class = "dolphin" },
+         properties = { screen = 3, tag = "apps" }
+      },
+
+
 
       {
          rule = {},

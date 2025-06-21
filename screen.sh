@@ -1,11 +1,19 @@
 #!/bin/sh
 
-# Set DPI globally to 144 (for 4K)
-echo "Xft.dpi: 144" | xrdb -merge
+xrdb -merge <<< "Xft.dpi: 144"
 
-# Configure screen layout
+# Skip if layout already applied
+if ! xrandr --listmonitors | grep -q DP-0; then
+  exit
+fi
+
 xrandr \
-   --output HDMI-0 --mode 1920x1080 --pos -540x0 --scale 1.5x1.5 --rotate left \
-   --output DVI-D-0 --mode 3840x2160 --pos 1080x0 --rotate normal \
-   --output DP-0 --primary --mode 3840x2160 --pos 4920x0 --rotate normal \
-   --output DP-1 --off
+  --output DP-0 --off \
+  --output DVI-D-0 --off \
+  --output HDMI-0 --off
+
+xrandr \
+  --output DP-0 --primary --mode 3840x2160 --pos 3840x0 --rotate normal \
+  --output DVI-D-0 --mode 3840x2160 --pos 0x0 --rotate normal \
+  --output HDMI-0 --mode 1920x1080 --scale 1.5x1.5 --pos 7680x200 --rotate normal
+

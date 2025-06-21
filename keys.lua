@@ -4,8 +4,8 @@ local gears = require("gears")
 local beautiful = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local lain = require("lain")
-
-local modkey = "Mod4"
+local move = require("move_client")
+local modkey = "Mod3"
 local altkey = "Mod1"
 local terminal = "wezterm"
 local browser = "librewolf"
@@ -93,12 +93,27 @@ globalkeys = mytable.join(
    awful.key({ modkey, }, "w", function() awful.util.mymainmenu:show() end,
       { description = "show main menu", group = "awesome" }),
 
-   -- Layout manipulation
-   awful.key({ modkey, "Shift" }, "Right", function() awful.client.swap.byidx(1) end,
-      { description = "swap with next client by index", group = "client" }),
-   awful.key({ modkey, "Shift" }, "Left", function() awful.client.swap.byidx(-1) end,
-      { description = "swap with previous client by index", group = "client" }),
+   -- -- Layout manipulation
+   awful.key({ modkey, "Shift" }, "Down", function()
+      move.move_client_bydirection("down")
+   end, { description = "move client down", group = "client" }),
 
+   awful.key({ modkey, "Shift" }, "Up", function()
+      move.move_client_bydirection("up")
+   end, { description = "move client up", group = "client" }),
+
+   awful.key({ modkey, "Shift" }, "Left", function()
+      move.move_client_bydirection("left")
+   end, { description = "move client left", group = "client" }),
+
+   awful.key({ modkey, "Shift" }, "Right", function()
+      move.move_client_bydirection("right")
+   end, { description = "move client right", group = "client" }),
+
+
+   awful.key({ modkey }, "F8", function()
+      move.show_client_position()
+   end, { description = "show client x/y", group = "debug" }),
 
    -- Show/hide wibox
    awful.key({ modkey }, "b", function()
@@ -130,18 +145,18 @@ globalkeys = mytable.join(
       c:move_to_tag(tags[prev_idx])
       tags[prev_idx]:view_only()
    end, { description = "move client to previous tag", group = "move client" }),
-   awful.key({ modkey, "Control" }, "Left", function()
-      local c = client.focus
-      if not c then return end
-      local next_screen = c.screen.index % screen.count() + 1
-      c:move_to_screen(next_screen)
-   end, { description = "move client to next screen", group = "move client" }),
-   awful.key({ modkey, "Control" }, "Right", function()
-      local c = client.focus
-      if not c then return end
-      local prev_screen = (c.screen.index - 2 + screen.count()) % screen.count() + 1
-      c:move_to_screen(prev_screen)
-   end, { description = "move client to previous screen", group = "move client" }),
+   -- awful.key({ modkey, "Control" }, "Left", function()
+   --    local c = client.focus
+   --    if not c then return end
+   --    local next_screen = c.screen.index % screen.count() + 1
+   --    c:move_to_screen(next_screen)
+   -- end, { description = "move client to next screen", group = "move client" }),
+   -- awful.key({ modkey, "Control" }, "Right", function()
+   --    local c = client.focus
+   --    if not c then return end
+   --    local prev_screen = (c.screen.index - 2 + screen.count()) % screen.count() + 1
+   --    c:move_to_screen(prev_screen)
+   -- end, { description = "move client to previous screen", group = "move client" }),
 
    --resize
    awful.key({ modkey, "Shift", "Control" }, "Right",
@@ -206,20 +221,20 @@ globalkeys = mytable.join(
       { description = "reload awesome", group = "awesome" }),
    -- awful.key({ modkey, "Shift" }, "q", awesome.quit,
    --    { description = "quit awesome", group = "awesome" }),
-   awful.key({ modkey, altkey }, "l", function() awful.tag.incmwfact(0.05) end,
-      { description = "increase master width factor", group = "layout" }),
-   awful.key({ modkey, altkey }, "h", function() awful.tag.incmwfact(-0.05) end,
-      { description = "decrease master width factor", group = "layout" }),
-   awful.key({ modkey, "Shift" }, "h", function() awful.tag.incnmaster(1, nil, true) end,
-      { description = "increase the number of master clients", group = "layout" }),
-   awful.key({ modkey, "Shift" }, "l", function() awful.tag.incnmaster(-1, nil, true) end,
-      { description = "decrease the number of master clients", group = "layout" }),
-   awful.key({ modkey, "Control" }, "h", function() awful.tag.incncol(1, nil, true) end,
-      { description = "increase the number of columns", group = "layout" }),
-   awful.key({ modkey, "Control" }, "l", function() awful.tag.incncol(-1, nil, true) end,
-      { description = "decrease the number of columns", group = "layout" }),
-   awful.key({ modkey, }, "space", function() awful.layout.inc(1) end,
-      { description = "select next", group = "layout" }),
+   -- awful.key({ modkey, altkey }, "l", function() awful.tag.incmwfact(0.05) end,
+   --    { description = "increase master width factor", group = "layout" }),
+   -- awful.key({ modkey, altkey }, "h", function() awful.tag.incmwfact(-0.05) end,
+   --    { description = "decrease master width factor", group = "layout" }),
+   -- awful.key({ modkey, "Shift" }, "h", function() awful.tag.incnmaster(1, nil, true) end,
+   --    { description = "increase the number of master clients", group = "layout" }),
+   -- awful.key({ modkey, "Shift" }, "l", function() awful.tag.incnmaster(-1, nil, true) end,
+   --    { description = "decrease the number of master clients", group = "layout" }),
+   -- awful.key({ modkey, "Control" }, "h", function() awful.tag.incncol(1, nil, true) end,
+   --    { description = "increase the number of columns", group = "layout" }),
+   -- awful.key({ modkey, "Control" }, "l", function() awful.tag.incncol(-1, nil, true) end,
+   --    { description = "decrease the number of columns", group = "layout" }),
+   -- awful.key({ modkey, }, "space", function() awful.layout.inc(1) end,
+   --    { description = "select next", group = "layout" }),
    -- awful.key({ modkey, "Shift" }, "space", function() awful.layout.inc(-1) end,
    --    { description = "select previous", group = "layout" }),
 
@@ -269,7 +284,11 @@ globalkeys = mytable.join(
    -- User programs
    awful.key({ modkey }, "q", function() awful.spawn(browser) end,
       { description = "run browser", group = "launcher" }),
-   awful.key({ modkey }, "p", function() awful.spawn("rofi -show drun") end,
+   -- awful.key({ modkey }, "p", function() awful.spawn("rofi -show drun") end,
+   --    { description = "run launcher", group = "launcher" }),
+   awful.key({ modkey }, "p", function()
+         awful.spawn("rofi -show drun -theme ~/.config/rofi/themes/awesome-dark.rasi")
+      end,
       { description = "run launcher", group = "launcher" }),
    awful.key({ modkey }, "f", function()
       local c = client.focus
@@ -289,26 +308,7 @@ globalkeys = mytable.join(
       awful.spawn("wezterm cli spawn --new-window")
    end, { description = "new wezterm window", group = "launcher" }),
 
-   --[[ Menubar
-    -- awful.key({ modkey }, "p", function() menubar.show() end,
-    --           {description = "show the menubar", group = "launcher"}),
-    --]]
-   --[[ dmenu
-    awful.key({ modkey }, "x", function ()
-            os.execute(string.format("dmenu_run -i -fn 'Monospace' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
-            beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus))
-        end,
-        {description = "show dmenu", group = "launcher"}),
-    --]]
-   -- alternatively use rofi, a dmenu-like application with more features
-   -- check https://github.com/DaveDavenport/rofi for more details
-   --[[ rofi
-    awful.key({ modkey }, "x", function ()
-            os.execute(string.format("rofi -show %s -theme %s",
-            'run', 'dmenu'))
-        end,
-        {description = "show rofi", group = "launcher"}),
-    --]]
+
    -- Prompt
    awful.key({ modkey }, "r", function() awful.screen.focused().mypromptbox:run() end,
       { description = "run prompt", group = "launcher" }),

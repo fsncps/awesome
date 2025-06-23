@@ -5,6 +5,7 @@ local beautiful = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local lain = require("lain")
 local move = require("move_client")
+local resize_tile = require("resize_tile")
 local modkey = "Mod3"
 local altkey = "Mod1"
 local terminal = "wezterm"
@@ -36,18 +37,12 @@ globalkeys = mytable.join(
 
 
    -- Tag browsing
-   awful.key({ modkey, }, "Page_Up", awful.tag.viewprev,
-      { description = "view previous", group = "tag" }),
-   awful.key({ modkey, }, "Page_Down", awful.tag.viewnext,
+   awful.key({ modkey, }, "Tab", awful.tag.viewnext,
+      { description = "view next", group = "tag" }),
+   awful.key({ modkey, "Shift" }, "Tab", awful.tag.viewprev,
       { description = "view next", group = "tag" }),
    awful.key({ modkey, }, "Escape", awful.tag.history.restore,
       { description = "go back", group = "tag" }),
-
-   -- -- Non-empty tag browsing
-   -- awful.key({ altkey }, "Left", function() lain.util.tag_view_nonempty(-1) end,
-   --    { description = "view  previous nonempty", group = "tag" }),
-   -- awful.key({ altkey }, "Right", function() lain.util.tag_view_nonempty(1) end,
-   --    { description = "view  previous nonempty", group = "tag" }),
 
    -- Default client focus
    awful.key({ altkey, }, "Tab",
@@ -111,9 +106,7 @@ globalkeys = mytable.join(
    end, { description = "move client right", group = "client" }),
 
 
-   awful.key({ modkey }, "F8", function()
-      move.show_client_position()
-   end, { description = "show client x/y", group = "debug" }),
+
 
    -- Show/hide wibox
    awful.key({ modkey }, "b", function()
@@ -126,8 +119,8 @@ globalkeys = mytable.join(
       end,
       { description = "toggle wibox", group = "awesome" }),
 
-   -- move client to next tag/screen
-   awful.key({ modkey, "Shift" }, "Page_Down", function()
+   -- move client between tags
+   awful.key({ modkey, "Control" }, "Tab", function()
       local c = client.focus
       if not c then return end
       local tags = c.screen.tags
@@ -136,7 +129,7 @@ globalkeys = mytable.join(
       c:move_to_tag(tags[next_idx])
       tags[next_idx]:view_only()
    end, { description = "move client to next tag", group = "move client" }),
-   awful.key({ modkey, "Shift" }, "Page_Up", function()
+   awful.key({ modkey, "Shift", "Control" }, "Tab", function()
       local c = client.focus
       if not c then return end
       local tags = c.screen.tags
@@ -145,18 +138,6 @@ globalkeys = mytable.join(
       c:move_to_tag(tags[prev_idx])
       tags[prev_idx]:view_only()
    end, { description = "move client to previous tag", group = "move client" }),
-   -- awful.key({ modkey, "Control" }, "Left", function()
-   --    local c = client.focus
-   --    if not c then return end
-   --    local next_screen = c.screen.index % screen.count() + 1
-   --    c:move_to_screen(next_screen)
-   -- end, { description = "move client to next screen", group = "move client" }),
-   -- awful.key({ modkey, "Control" }, "Right", function()
-   --    local c = client.focus
-   --    if not c then return end
-   --    local prev_screen = (c.screen.index - 2 + screen.count()) % screen.count() + 1
-   --    c:move_to_screen(prev_screen)
-   -- end, { description = "move client to previous screen", group = "move client" }),
 
    --resize
    awful.key({ modkey, "Shift", "Control" }, "Right",
@@ -196,23 +177,17 @@ globalkeys = mytable.join(
       { description = "decrease master height", group = "client" }),
 
 
-   -- On-the-fly useless gaps change
-   -- awful.key({ altkey, "Control" }, "+", function() lain.util.useless_gaps_resize(1) end,
-   --    { description = "increment useless gaps", group = "tag" }),
-   -- awful.key({ altkey, "Control" }, "-", function() lain.util.useless_gaps_resize(-1) end,
-   --    { description = "decrement useless gaps", group = "tag" }),
-
    -- Dynamic tagging
    awful.key({ modkey, "Shift" }, "n", function() lain.util.add_tag() end,
       { description = "add new tag", group = "tag" }),
    awful.key({ modkey, "Shift" }, "r", function() lain.util.rename_tag() end,
       { description = "rename tag", group = "tag" }),
-   -- awful.key({ modkey, "Shift" }, "Left", function() lain.util.move_tag(-1) end,
-   --    { description = "move tag to the left", group = "tag" }),
-   -- awful.key({ modkey, "Shift" }, "Right", function() lain.util.move_tag(1) end,
-   --    { description = "move tag to the right", group = "tag" }),
    awful.key({ modkey, "Shift" }, "d", function() lain.util.delete_tag() end,
       { description = "delete tag", group = "tag" }),
+   awful.key({ modkey, "Shift" }, "Page_Up", function() lain.util.move_tag(-1) end,
+      { description = "move tag to the left", group = "tag" }),
+   awful.key({ modkey, "Shift" }, "Page_Down", function() lain.util.move_tag(1) end,
+      { description = "move tag to the right", group = "tag" }),
 
    -- Standard program
    -- awful.key({ modkey, }, "Return", function() awful.spawn(terminal) end,
@@ -233,10 +208,36 @@ globalkeys = mytable.join(
    --    { description = "increase the number of columns", group = "layout" }),
    -- awful.key({ modkey, "Control" }, "l", function() awful.tag.incncol(-1, nil, true) end,
    --    { description = "decrease the number of columns", group = "layout" }),
-   -- awful.key({ modkey, }, "space", function() awful.layout.inc(1) end,
-   --    { description = "select next", group = "layout" }),
-   -- awful.key({ modkey, "Shift" }, "space", function() awful.layout.inc(-1) end,
-   --    { description = "select previous", group = "layout" }),
+   awful.key({ modkey, }, "space", function() awful.layout.inc(1) end,
+      { description = "select next", group = "layout" }),
+   awful.key({ modkey, "Shift" }, "space", function() awful.layout.inc(-1) end,
+      { description = "select previous", group = "layout" }),
+
+   awful.key({ modkey, "Control" }, "j",
+      function() resize_tile.resize_tile_vertical(20) end,
+      { description = "increase slave height", group = "layout" }),
+
+   awful.key({ modkey, "Control" }, "k",
+      function() resize_tile.resize_tile_vertical(-20) end,
+      { description = "decrease slave height", group = "layout" }),
+
+   -- Resize focused client (up/down)
+   awful.key({ modkey, "Shift" }, "F4",
+      function(c)
+         if client.focus then
+            client.focus:relative_move(0, 0, 0, 20) -- grow height
+         end
+      end,
+      { description = "increase client height", group = "client" }),
+
+   awful.key({ modkey, "Shift" }, "F5",
+      function(c)
+         if client.focus then
+            client.focus:relative_move(0, 0, 0, -20) -- shrink height
+         end
+      end,
+      { description = "decrease client height", group = "client" }),
+
 
    awful.key({ modkey, "Control" }, "n", function()
       local c = awful.client.restore()

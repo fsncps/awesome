@@ -12,12 +12,13 @@ xresources.set_dpi(240)
 require("awful.hotkeys_popup.keys")
 
 -- ░░░ Theme + Config ░░░
-local config   = require("theme_config")
-local modkey   = "Mod3" -- override
-local terminal = config.terminal
-local browser  = config.browser
-local editor   = config.editor
-local vi_focus = config.vi_focus
+local config      = require("theme_config")
+local modkey      = "Mod3" -- override
+local terminal    = config.terminal
+local browser     = config.browser
+local editor      = config.editor
+local vi_focus    = config.vi_focus
+local tile_custom = require("layouts.tile_custom")
 
 -- ░░░ Error Handling ░░░
 do

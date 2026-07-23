@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Apply XKB shift-shift for caps first
-setxkbmap -option shift:both_capslock
+setxkbmap -rules evdev -model pc105 -layout ch -variant de_nodeadkeys \
+   -option shift:both_capslock,terminate:ctrl_alt_bksp
 
 # Clean out any existing bindings
 xmodmap -e "clear Mod3"
@@ -21,3 +22,7 @@ xmodmap -e "keycode 133 = Hyper_L"
 # Now add them cleanly
 xmodmap -e "add Mod4 = Super_L"
 xmodmap -e "add Mod3 = Hyper_L"
+
+# Symbol keys
+xmodmap -e "keycode 35 = slash exclam bracketright"
+xmodmap -e "keycode 49 = slash bar"

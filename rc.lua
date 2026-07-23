@@ -30,13 +30,7 @@ local wallpaper = require("wallpaper")
 wallpaper.init() -- set up signals once
 
 -- ░░░ Theme + Config ░░░
-local config = require("config")
-local modkey = "Mod3" -- override
-local terminal = config.terminal
-local browser = config.browser
-local editor = config.editor
-local vi_focus = config.vi_focus
-local tile_custom = require("tile_custom")
+require("config")
 
 -- ░░░ Error Handling ░░░
 do
@@ -72,15 +66,7 @@ local function run_once(cmds)
   end
 end
 run_once({ "urxvtd", "unclutter -root" })
-
--- ░░░ Screen Mapping Debug (optional, temporary) ░░░
-for s in screen do
-  local outputs = ""
-  for name, _ in pairs(s.outputs or {}) do
-    outputs = outputs .. name .. ": Screen" .. s.index .. "\n"
-  end
-  naughty.notify({ title = "Screen Mapping", text = outputs })
-end
+awful.spawn.with_shell('xinput --set-prop 12 "libinput Accel Speed" 1')
 
 -- ░░░ Load Theme, Bars, Tags ░░░
 require("screen")
@@ -90,7 +76,8 @@ end)
 
 -- ░░░ Load Menu & Mouse ░░░
 awful.util.mymainmenu = require("menu")
-clientbuttons = require("mouse")
+local mouse_module = require("mousebuttons")
+root.buttons(mouse_module.root_buttons)
 
 -- ░░░ Load Keys and Client Rules ░░░
 awful.spawn.with_shell("pgrep -x xss-lock >/dev/null || xss-lock --transfer-sleep-lock -- i3lock --nofork &")
@@ -99,7 +86,7 @@ root.keys(keys.global)
 
 require("clients")({
   clientkeys = keys.client,
-  clientbuttons = keys.clientbuttons,
+  clientbuttons = mouse_module.clientbuttons,
   vi_focus = keys.vi_focus,
 })
 
